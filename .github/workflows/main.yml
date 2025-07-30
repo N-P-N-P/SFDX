@@ -20,9 +20,9 @@ jobs:
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SFDX_AUTH_URL }}" > auth.txt
-          sfdx auth:sfdxurl:store -f auth.txt -a MyOrgAlias
+          sfdx auth:sfdxurl:store -f auth.txt -a Source
 
       - name: Deploy to Salesforce
         run: |
-          sfdx force:source:deploy -p force-app -u MyOrgAlias --checkonly
-          sfdx force:source:deploy -p force-app -u MyOrgAlias --testlevel RunLocalTests
+          sfdx force:source:deploy -p force-app -u Source --checkonly
+          sfdx force:source:deploy -p force-app -u Source --testlevel RunLocalTests
