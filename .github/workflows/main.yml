@@ -24,7 +24,7 @@ jobs:
           SF_USERNAME: ${{ secrets.SF_USERNAME }}
         run: |
           echo "$SFDX_JWT_KEY" > server.key
-            sfdx force:auth:jwt:grant \
+           npm sfdx force:auth:jwt:grant \
             --clientid "$SFDX_CLIENT_ID" \
             --jwtkeyfile server.key \
             --username "$SF_USERNAME" \
@@ -33,4 +33,4 @@ jobs:
 
       - name: Deploy to Salesforce
         run: |
-          sfdx force:source:deploy -p force-app -u "$SF_USERNAME" --testlevel RunLocalTests
+          npm sfdx force:source:deploy -p force-app -u "$SF_USERNAME" --testlevel RunLocalTests
