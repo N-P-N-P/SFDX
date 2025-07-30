@@ -8,21 +8,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Salesforce CLI
-        run: |
-          npm install sfdx-cli --global
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
 
-      - name: Authenticate to Salesforce
+      - name: Authenticate with JWT
+        env:
+          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
+          SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+          SF_USERNAME: ${{ secrets.SF_USERNAME }}
         run: |
-          echo "${{ secrets.SFDX_AUTH_URL }}" > auth.txt
-          sfdx auth:sfdxurl:store -f auth.txt -a Source
+          echo "$SFDX_JWT_KEY" > server.key
+          npx sfdx force:auth:jwt:grant \
+            --clientid "$SFDX_CLIENT_ID" \
+            --jwtkeyfile server.key \
+            --username "$SF_USERNAME" \
+            --setdefaultdevhubusername
+          rm server.key
 
       - name: Deploy to Salesforce
         run: |
-          sfdx force:source:deploy -p force-app -u Source --checkonly
-          sfdx force:source:deploy -p force-app -u Source --testlevel RunLocalTests
+          npx sfdx force:source:deploy -p force-app -u "$SF_USERNAME" --testlevel RunLocalTests
