@@ -1,44 +1,44 @@
-name: Deploy to Salesforce
+name: Salesforce Deployment
 
 on:
   push:
     branches:
-      - main
+      - main  # or your deployment branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
-        
-      - name: Install Salesforce CLI
-        run: |
-          npm install -g @salesforce/cli
+          node-version: '18'
 
-      - name: Verify CLI installation
-        run: |
-          sf --version
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
 
       - name: Authenticate with JWT
         env:
-          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
           SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
           SF_USERNAME: ${{ secrets.SF_USERNAME }}
         run: |
           echo "$SFDX_JWT_KEY" > server.key
-           npx sfdx force:auth:jwt:grant \
-            --clientid "$SFDX_CLIENT_ID" \
-            --jwtkeyfile server.key \
+          sf org login jwt \
+            --client-id "$SFDX_CLIENT_ID" \
+            --jwt-key-file server.key \
             --username "$SF_USERNAME" \
-            --setdefaultdevhubusername
+            --alias target-org \
+            --set-default
           rm server.key
 
       - name: Deploy to Salesforce
         run: |
-          npx sfdx force:source:deploy -p force-app -u "$SF_USERNAME" --testlevel RunLocalTests
+          sf project deploy start \
+            --target-org target-org \
+            --test-level RunLocalTests \
+            --wait 30
