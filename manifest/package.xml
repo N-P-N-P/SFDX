@@ -74,6 +74,14 @@
         <name>Community</name>
     </types>
     <types>
+        <members>Dataloader_Partner</members>
+        <members>Salesforce_CLI</members>
+        <members>Salesforce_Developers</members>
+        <members>Trailblazer_me</members>
+        <members>tbid_digital_salesforce_com</members>
+        <name>ConnectedApp</name>
+    </types>
+    <types>
         <members>Abc_Logo_Images_Browse_617_Stock</members>
         <name>ContentAsset</name>
     </types>
@@ -535,6 +543,26 @@
     <types>
         <members>Case</members>
         <name>EscalationRules</name>
+    </types>
+    <types>
+        <members>Devops_JWT</members>
+        <name>ExternalClientApplication</name>
+    </types>
+    <types>
+        <members>Devops_JWT_plcy</members>
+        <name>ExtlClntAppConfigurablePolicies</name>
+    </types>
+    <types>
+        <members>Devops_JWT_glbloauth</members>
+        <name>ExtlClntAppGlobalOauthSettings</name>
+    </types>
+    <types>
+        <members>Devops_JWT_oauthPlcy</members>
+        <name>ExtlClntAppOauthConfigurablePolicies</name>
+    </types>
+    <types>
+        <members>Devops_JWT_oauth</members>
+        <name>ExtlClntAppOauthSettings</name>
     </types>
     <types>
         <members>User_Story__c.US</members>
